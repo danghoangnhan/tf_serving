@@ -14,6 +14,10 @@
    virtualenv venv
    source venv/bin/activate
    ```
+2. **run the code**
+    ```bash
+    python ptbdb/baseline.py
+    ```
 2. **Deploy into tf_serving:**
     
     ***Download the TensorFlow Serving Docker image***
