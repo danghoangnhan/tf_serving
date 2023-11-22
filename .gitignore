@@ -1,3 +1,4 @@
 venv
 .vscode
 input
+ptbdb/__pycache__
