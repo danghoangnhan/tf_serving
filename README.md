@@ -36,11 +36,11 @@
         tensorflow/serving &
     ```
 4. **Query the model using the predict API**
-```bash
-curl -d '{"instances": [1.0, 2.0, 5.0]}' \
-    -X POST http://localhost:8501/v1/models/half_plus_two:predict
-```
-**Returns => { "predictions": [2.5, 3.0, 4.5] }**
+    ```bash
+    curl -d '{"instances": [1.0, 2.0, 5.0]}' \
+        -X POST http://localhost:8501/v1/models/half_plus_two:predict
+    ```
+    **Returns => { "predictions": [2.5, 3.0, 4.5] }**
 
 
 
