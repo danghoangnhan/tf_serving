@@ -18,7 +18,7 @@
     ```bash
     python ptbdb/baseline.py
     ```
-2. **Deploy into tf_serving:**
+3. **Deploy into tf_serving:**
     
     ***Download the TensorFlow Serving Docker image***
     ```bash
@@ -35,7 +35,7 @@
         -e MODEL_NAME=half_plus_two \
         tensorflow/serving &
     ```
-3. **Query the model using the predict API**
+4. **Query the model using the predict API**
 ```bash
 curl -d '{"instances": [1.0, 2.0, 5.0]}' \
     -X POST http://localhost:8501/v1/models/half_plus_two:predict
