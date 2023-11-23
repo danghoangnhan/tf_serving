@@ -7,6 +7,12 @@
 - Docker (for TensorFlow Serving)
 - Operating system: Ubuntu 20.04
 
+## Dataset
+1. The PTB Diagnostic ECG Database
+    - Number of Samples: 14552
+    - Number of Categories: 2
+    - Sampling Frequency: 125Hz
+    Data Source: Physionet's PTB Diagnostic Database
 ## Usage
 
 1. **setup the project:**
@@ -26,19 +32,19 @@
     ```
     ***Location of demo models***
     ```bash
-    model="$(pwd)/serving/tensorflow_serving/servables/tensorflow/testdata"
+    model="$(pwd)/export_tf/ptpdb"
     ``````
     ***Start TensorFlow Serving container and open the REST API port***
     ```bash
     docker run -t --rm -p 8501:8501 \
-        -v "$TESTDATA/saved_model_half_plus_two_cpu:/models/half_plus_two" \
-        -e MODEL_NAME=half_plus_two \
+        -v "$model:/models" \
+        -e MODEL_NAME=cnn_baseline \
         tensorflow/serving &
     ```
 4. **Query the model using the predict API**
     ```bash
-    curl -d '{"instances": [1.0, 2.0, 5.0]}' \
-        -X POST http://localhost:8501/v1/models/half_plus_two:predict
+    curl -d '{"instances": [[1.0, 2.0, 5.0]]}' \
+        -X POST http://localhost:8501/v1/models/cnn_baseline:predict
     ```
     **Returns => { "predictions": [2.5, 3.0, 4.5] }**
 
