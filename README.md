@@ -32,13 +32,13 @@
     ```
     ***Location of demo models***
     ```bash
-    model="$(pwd)/export_tf/ptpdb"
+    model="$(pwd)/export_tf/moritality"
     ``````
     ***Start TensorFlow Serving container and open the REST API port***
     ```bash
     docker run -t --rm -p 8501:8501 \
         -v "$model:/models" \
-        -e MODEL_NAME=cnn_baseline \
+        -e MODEL_NAME=ann_baseline \
         tensorflow/serving &
     ```
 4. **Query the model using the predict API**
