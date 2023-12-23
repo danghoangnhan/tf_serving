@@ -1,0 +1,10 @@
+version: '3'
+services:
+  tensorflow-serving:
+    image: tensorflow/serving
+    ports:
+      - "8501:8501"
+    volumes:
+      - ./export_tf/mortality:/models/ann_baseline
+    environment:
+      - MODEL_NAME=ann_baseline
