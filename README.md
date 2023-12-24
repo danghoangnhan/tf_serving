@@ -1,4 +1,4 @@
-# ECG classification
+# tf_Serving
 
 
 ## Prerequisites
@@ -54,9 +54,19 @@
    source venv/bin/activate
    ```
 2. **run the code**
-    ```bash
-    python ptbdb/baseline.py
-    ```
+    ### In-hospital mortality prediction
+    1. Logistic Regression
+        ```bash
+        python in_hospital_mortality/lr/main.py --l2 --C 0.001 --output_dir in_hospital_mortality/lr/  
+        ```
+    2. Ann model
+        ```bash
+        python ptbdb/baseline.py
+        ```
+    3. Logistic Regression
+        ```bash
+        python xgboost/main.py  --output_dir in_hospital_mortality/xgboost/
+        ```
 3. **Deploy into tf_serving:**
     
     ***Download the TensorFlow Serving Docker image***
