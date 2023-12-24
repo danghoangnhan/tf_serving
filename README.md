@@ -54,19 +54,47 @@
    source venv/bin/activate
    ```
 2. **run the code**
-    ### In-hospital mortality prediction
-    1. Logistic Regression
+    ### In-hospital mortality prediction#
+    ##### Logistic Regression
         ```bash
         python in_hospital_mortality/lr/main.py --l2 --C 0.001 --output_dir in_hospital_mortality/lr/  
         ```
-    2. Ann model
+    ##### Ann model
         ```bash
         python ptbdb/baseline.py
         ```
-    3. Logistic Regression
+    ##### Logistic Regression
         ```bash
         python xgboost/main.py  --output_dir in_hospital_mortality/xgboost/
         ```
+    ### Phenotype classification
+
+    ##### LSTM
+    Train
+
+    ```
+    python phenotyping/rnn/main.py --network models/lstm.py --dim 256 --timestep 1.0 --depth 1 --dropout 0.3 --mode train --batch_size 8 --output_dir phenotyping/
+    ```
+
+    ##### XGBoost
+    Train & Test
+    ```
+    python phenotyping/xgboost/main.py  --output_dir phenotyping/xgboost/
+    ```
+
+    ##### LightGBM
+    Train & Test
+    ```
+    python phenotyping/lightgbm/main.py  --output_dir phenotyping/lightgbm/
+    ```
+
+    ##### XGBoost FBFE
+    Train & Test
+    ```
+    python phenotyping/xgboost_FBFE/main.py --timestep 1.0  --output_dir phenotyping/xgboost_FBFE/
+    ```
+
+
 3. **Deploy into tf_serving:**
     
     ***Download the TensorFlow Serving Docker image***
