@@ -53,7 +53,7 @@
    virtualenv venv
    source venv/bin/activate
    ```
-2. **run the code**
+2. **run the code**@
     ### In-hospital mortality prediction#
     ##### Logistic Regression
         ```bash
