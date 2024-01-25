@@ -2,10 +2,7 @@ from __future__ import print_function
 
 import operator
 import logging
-
-import numpy as np
 import settings
-import utils
 import tensorflow as tf
 
 # Communication to TensorFlow server via gRPC
@@ -15,7 +12,7 @@ from tensorflow_serving.apis import prediction_service_pb2_grpc
 FLAGS = tf.compat.v1.app.flags.FLAGS
 
 
-tf.compat.v1.app.flags.DEFINE_string('server', '0.0.0.0:8500','PredictionService host:port')
+tf.compat.v1.app.flags.DEFINE_string('server', 'tf-serving-server:8500','PredictionService host:port')
 tf.compat.v1.app.flags.DEFINE_string('image', '','path to image in JPEG format')
 
 log = logging.getLogger(__name__)
@@ -25,8 +22,8 @@ def __get_tf_server_connection_params__():
     Returns connection parameters to TensorFlow Server
     :return: Tuple of TF server name and server port
     '''
-    server_name = utils.get_env_var_setting('TF_SERVER_NAME', settings.DEFAULT_TF_SERVER_NAME)
-    server_port = utils.get_env_var_setting('TF_SERVER_PORT', settings.DEFAULT_TF_SERVER_PORT)
+    server_name = settings.get_env_var_setting('TF_SERVER_NAME', settings.DEFAULT_TF_SERVER_NAME)
+    server_port = settings.get_env_var_setting('TF_SERVER_PORT', settings.DEFAULT_TF_SERVER_PORT)
     return server_name, server_port
 
 
@@ -40,7 +37,6 @@ def __create_prediction_request__(image):
     request.model_spec.name = settings.GAN_MODEL_NAME
     # request.model_spec.signature_name = settings.GAN_MODEL_SIGNATURE_NAME
     # request.inputs[settings.GAN_MODEL_INPUTS_KEY].CopyFrom(tf.contrib.util.make_tensor_proto(image, shape=[1]))
-    # image = image.reshape([300, 300, 3])
     request.inputs[settings.GAN_MODEL_INPUTS_KEY].CopyFrom(tf.make_tensor_proto(image))
     return request
 
