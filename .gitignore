@@ -1,7 +1,8 @@
+__pycache__
 venv
 .vscode
 input
 ptbdb/__pycache__
 export_tf
 output
-data
+dataset
