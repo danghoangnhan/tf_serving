@@ -1,10 +1,11 @@
 from __future__ import absolute_import
 from __future__ import print_function
-
+import sys
+sys.path.append('../')
 from utils.readers import InHospitalMortalityReader
 from utils import common_utils
 from utils.metrics import print_metrics_binary
-from in_hospital_mortality.preprocessing import save_results
+from in_hospital_mortality.rnn.preprocessing import save_results
 from sklearn.preprocessing import Imputer, StandardScaler
 from sklearn.linear_model import LogisticRegression
 
@@ -17,7 +18,6 @@ import time
 
 def read_and_extract_features(reader, period, features):
     ret = common_utils.read_chunk(reader, reader.get_number_of_examples())
-    # ret = common_utils.read_chunk(reader, 100)
     X = common_utils.extract_features_from_rawdata(ret['X'], ret['header'], period, features)
     return (X, ret['y'], ret['name'])
 

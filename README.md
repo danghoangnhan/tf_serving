@@ -7,22 +7,6 @@
 - Docker (for TensorFlow Serving)
 - Operating system: Ubuntu 20.04
 
-### Phenotyping
-
-- **Description:** This dataset contains information related to phenotyping, which may include patient characteristics, medical history, and other relevant data.
-
-- **Source:** Kaggle
-
-- **Data Format:** CSV
-
-- **Data Fields:** [List and describe the key fields or columns in the dataset. You can find this information on the Kaggle dataset page.]
-
-- **Data Usage:** This dataset can be used for various tasks related to phenotyping analysis, machine learning, and data science.
-
-- **License:** Please refer to the [Kaggle dataset page](https://www.kaggle.com/datasets/uzair54/phenotyping) for information regarding the dataset's license and terms of use.
-
-- **Download Link:** You can download the dataset from the [Kaggle dataset page](https://www.kaggle.com/datasets/uzair54/phenotyping).
-
 ### In Hospital Mortality Prediction
 
 - **Description:** This dataset is designed for predicting in-hospital mortality and may include patient records, clinical measurements, and outcomes.
@@ -42,8 +26,6 @@
 ### Usage Guidelines
 
 [Include any specific guidelines or instructions for users who want to use the dataset, such as data preprocessing steps or ethical considerations.]
-
-
 
 
 ## Usage

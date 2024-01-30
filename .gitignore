@@ -7,3 +7,5 @@ export_tf
 output
 dataset
 export_tf
+in_hospital_mortality/keras_states
+in_hospital_mortality/keras_logs

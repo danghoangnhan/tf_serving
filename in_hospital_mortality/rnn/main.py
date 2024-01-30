@@ -4,21 +4,17 @@ from __future__ import print_function
 import numpy as np
 import argparse
 import os
-import sys
-import os
 from tensorflow.keras.optimizers import Adam
-
-
+import sys
 # Get the directory of the current script
 current_script_path = os.path.dirname(os.path.abspath(__file__))
-
 # Go up two levels to the grandparent folder
 grandparent_folder = os.path.dirname(os.path.dirname(current_script_path))
-
 # Add the grandparent folder to sys.path
 sys.path.append(grandparent_folder)
 import imp
 import re
+from models.lstm import Network
 
 import preprocessing
 from utils.readers import InHospitalMortalityReader
@@ -46,7 +42,7 @@ common_utils.add_common_arguments(parser)
 parser.add_argument('--target_repl_coef', type=float, default=0.0)
 parser.add_argument('--deep_supervision', dest='deep_supervision', action='store_true')
 parser.add_argument('--data', type=str, help='Path to the data of decompensation task',
-                    default=os.path.join(grandparent_folder,'data/in-hospital-mortality'))
+                    default=os.path.join(grandparent_folder,'dataset/in-hospital-mortality'))
 parser.add_argument('--output_dir', type=str, help='Directory relative which all output files are stored',
                     default='.')
 parser.set_defaults(deep_supervision=False)
@@ -95,10 +91,9 @@ args_dict['header'] = discretizer_header
 args_dict['task'] = 'ihm'
 args_dict['target_repl'] = target_repl
 
-# Build the model
 print("==> using model {}".format(args.network))
-model_module = imp.load_source(os.path.basename(args.network), args.network)
-model = model_module.Network(**args_dict)
+model = Network(dim=16,depth=2,dropout=0.3,rec_dropout=0.0,batch_norm=None,task='ihm')
+model.summary()
 suffix = "{}.bs{}{}{}.ts{}".format("" if not args.deep_supervision else ".dsup",
                                    args.batch_size,
                                    ".L1{}".format(args.l1) if args.l1 > 0 else "",
