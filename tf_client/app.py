@@ -3,13 +3,16 @@ import logging.config
 import settings
 from flask import Flask, Blueprint
 from api.restplus import api
-from api.cnn.endpoints.client import ns as gan_client_namespace
+import sys
+sys.path.append('../')
+from tf_client.api.cnn.client import cnn_namespace
+from tf_client.api.lstm.client import lstm_namespace
 
 # create Flask application
 application = Flask(__name__)
 
 # load logging confoguration and create log object
-logging.config.fileConfig('logging.conf')
+logging.config.fileConfig('./logging.conf')
 log = logging.getLogger(__name__)
 
 
@@ -27,6 +30,8 @@ def __get_flask_server_params__():
 
     return server_name, server_port, flask_debug
 
+
+
 def configure_app(flask_app):
     '''
     Configure Flask application
@@ -38,20 +43,20 @@ def configure_app(flask_app):
     flask_app.config['RESTPLUS_MASK_SWAGGER'] = settings.RESTPLUS_MASK_SWAGGER
     flask_app.config['ERROR_404_HELP'] = settings.RESTPLUS_ERROR_404_HELP
 
+
+
 def initialize_app(flask_app):
     '''
     Initialize Flask application with Flask-RestPlus
-
     :param flask_app: instance of Flask() class
     '''
     blueprint = Blueprint('tf_api', __name__, url_prefix='/tf_api')
 
     configure_app(flask_app)
     api.init_app(blueprint)
-    api.add_namespace(gan_client_namespace)
-
+    api.add_namespace(cnn_namespace)
+    api.add_namespace(lstm_namespace)
     flask_app.register_blueprint(blueprint)
-
 
 if __name__ == '__main__':
     server_name, server_port, flask_debug = __get_flask_server_params__()

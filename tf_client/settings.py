@@ -12,12 +12,22 @@ RESTPLUS_VALIDATE = True
 RESTPLUS_MASK_SWAGGER = False
 RESTPLUS_ERROR_404_HELP = False
 
-# GAN client settings
+# tf_client settings
 DEFAULT_TF_SERVER_NAME = '0.0.0.0'
 DEFAULT_TF_SERVER_PORT = 8501
-GAN_MODEL_NAME = 'cnn'
-GAN_MODEL_SIGNATURE_NAME = 'predict_images'
-GAN_MODEL_INPUTS_KEY = 'conv2d_input'
+
+
+# CNN client settings
+MODEL_NAME = 'cnn'
+MODEL_SIGNATURE_NAME = 'predict_images'
+MODEL_INPUTS_KEY = 'conv2d_input'
+
+
+
+# CNN client settings
+MODEL_NAME = 'cnn'
+MODEL_SIGNATURE_NAME = 'predict_images'
+MODEL_INPUTS_KEY = 'conv2d_input'
 
 def get_env_var_setting(env_var_name, default_value):
     '''

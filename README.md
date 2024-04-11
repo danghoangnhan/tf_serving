@@ -11,8 +11,6 @@
 
 - **Description:** This dataset is designed for predicting in-hospital mortality and may include patient records, clinical measurements, and outcomes.
 
-- **Source:** Kaggle
-
 - **Data Format:** [Specify the format of the dataset, e.g., CSV, JSON.]
 
 - **Data Fields:** [List and describe the key fields or columns in the dataset. You can find this information on the Kaggle dataset page.]

@@ -26,15 +26,14 @@ def __get_tf_server_connection_params__():
     server_port = settings.get_env_var_setting('TF_SERVER_PORT', settings.DEFAULT_TF_SERVER_PORT)
     return server_name, server_port
 
-
 def __create_prediction_request__(image):
     '''
-    Creates prediction request to TensorFlow server for GAN model
+    Creates prediction request to TensorFlow server for CNN model
     :param: Byte array, image for prediction
     :return: PredictRequest object
     '''
     request = predict_pb2.PredictRequest()
-    request.model_spec.name = settings.GAN_MODEL_NAME
+    request.model_spec.name = settings.MODEL_NAME
     # request.model_spec.signature_name = settings.GAN_MODEL_SIGNATURE_NAME
     # request.inputs[settings.GAN_MODEL_INPUTS_KEY].CopyFrom(tf.contrib.util.make_tensor_proto(image, shape=[1]))
     request.inputs[settings.GAN_MODEL_INPUTS_KEY].CopyFrom(tf.make_tensor_proto(image))
@@ -55,7 +54,6 @@ def __open_tf_server_channel__(server_name, server_port)->prediction_service_pb2
 def __make_prediction_and_prepare_results__(stub:prediction_service_pb2_grpc.PredictionServiceStub, request):
     '''
     Sends Predict request over a channel stub to TensorFlow server
-
     :param stub: Channel stub
     :param request: PredictRequest object
     :return: List of tuples, 3 most probable digits with their probabilities
@@ -71,8 +69,7 @@ def __make_prediction_and_prepare_results__(stub:prediction_service_pb2_grpc.Pre
 
 def make_prediction(image):
     '''
-    Predict the house number on the image using GAN model
-
+    Predict the house number on the image using CNN model
     :param image: Byte array, images for prediction
     :return: List of tuples, 3 most probable digits with their probabilities
     '''
