@@ -12,8 +12,8 @@ import sys
 sys.path.append('../../')
 from tf_client.api.logic.tf_serving_client import make_prediction
 
-# create dedicated namespace for GAN client
-cnn_namespace = api.namespace('ecg', description='Operations for GAN client')
+# create dedicated namespace for CNN client
+cnn_namespace = api.namespace('ecg', description='Operations for CNN client')
 
 # Flask-RestPlus specific parser for image uploading
 UPLOAD_KEY = 'image'

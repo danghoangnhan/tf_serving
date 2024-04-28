@@ -11,32 +11,30 @@ from tensorflow_serving.apis import predict_pb2
 from tensorflow_serving.apis import prediction_service_pb2_grpc
 FLAGS = tf.compat.v1.app.flags.FLAGS
 
-
 tf.compat.v1.app.flags.DEFINE_string('server', 'tf-serving-server:8500','PredictionService host:port')
 tf.compat.v1.app.flags.DEFINE_string('image', '','path to image in JPEG format')
 
 log = logging.getLogger(__name__)
 
-def __get_tf_server_connection_params__():
+def __get_tf_server_connection_params__(tfServerConfig:settings.TFServerconfig):
     '''
     Returns connection parameters to TensorFlow Server
     :return: Tuple of TF server name and server port
     '''
-    server_name = settings.get_env_var_setting('TF_SERVER_NAME', settings.DEFAULT_TF_SERVER_NAME)
-    server_port = settings.get_env_var_setting('TF_SERVER_PORT', settings.DEFAULT_TF_SERVER_PORT)
+    server_name = settings.get_env_var_setting('TF_SERVER_NAME', tfServerConfig.DEFAULT_TF_SERVER_NAME)
+    server_port = settings.get_env_var_setting('TF_SERVER_PORT', tfServerConfig.DEFAULT_TF_SERVER_PORT)
     return server_name, server_port
 
-def __create_prediction_request__(image):
+def __create_prediction_request__(modelConfig:settings.ModelConfig,image):
     '''
     Creates prediction request to TensorFlow server for CNN model
     :param: Byte array, image for prediction
     :return: PredictRequest object
     '''
     request = predict_pb2.PredictRequest()
-    request.model_spec.name = settings.MODEL_NAME
-    # request.model_spec.signature_name = settings.GAN_MODEL_SIGNATURE_NAME
-    # request.inputs[settings.GAN_MODEL_INPUTS_KEY].CopyFrom(tf.contrib.util.make_tensor_proto(image, shape=[1]))
-    request.inputs[settings.GAN_MODEL_INPUTS_KEY].CopyFrom(tf.make_tensor_proto(image))
+    request.model_spec.name = modelConfig.MODEL_NAME
+    request.model_spec.signature_name = modelConfig.MODEL_SIGNATURE_NAME
+    request.inputs[modelConfig.MODEL_INPUTS_KEY].CopyFrom(tf.make_tensor_proto(image))
     return request
 
 def __open_tf_server_channel__(server_name, server_port)->prediction_service_pb2_grpc.PredictionServiceStub:
@@ -67,16 +65,16 @@ def __make_prediction_and_prepare_results__(stub:prediction_service_pb2_grpc.Pre
         reverse=True)
     return sorted_values
 
-def make_prediction(image):
+def make_prediction(modelConfig:settings.ModelConfig,image):
     '''
     Predict the house number on the image using CNN model
     :param image: Byte array, images for prediction
     :return: List of tuples, 3 most probable digits with their probabilities
     '''
     # get TensorFlow server connection parameters
-    server_name, server_port = __get_tf_server_connection_params__()
+    server_name, server_port = __get_tf_server_connection_params__(modelConfig)
     log.info('Connecting to TensorFlow server %s:%s', server_name, server_port)
     stub = __open_tf_server_channel__(server_name, server_port)
     log.info("stub is created")
-    request = __create_prediction_request__(image)
+    request = __create_prediction_request__(modelConfig,image)
     return __make_prediction_and_prepare_results__(stub, request)

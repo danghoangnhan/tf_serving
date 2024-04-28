@@ -6,7 +6,7 @@ from api.restplus import api
 import sys
 sys.path.append('../')
 from tf_client.api.cnn.client import cnn_namespace
-from tf_client.api.lstm.client import lstm_namespace
+from tf_client.api.lstm.client import rhm_namespace
 
 # create Flask application
 application = Flask(__name__)
@@ -44,7 +44,6 @@ def configure_app(flask_app):
     flask_app.config['ERROR_404_HELP'] = settings.RESTPLUS_ERROR_404_HELP
 
 
-
 def initialize_app(flask_app):
     '''
     Initialize Flask application with Flask-RestPlus
@@ -54,8 +53,10 @@ def initialize_app(flask_app):
 
     configure_app(flask_app)
     api.init_app(blueprint)
+    
     api.add_namespace(cnn_namespace)
-    api.add_namespace(lstm_namespace)
+    api.add_namespace(rhm_namespace)
+
     flask_app.register_blueprint(blueprint)
 
 if __name__ == '__main__':

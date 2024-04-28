@@ -71,7 +71,6 @@ def extract_features_single_episode(data_raw, period, functions):
                           for i in range(len(data_raw))]
     return np.concatenate(extracted_features, axis=0)
 
-
 def extract_features(data_raw, period, features):
     period = periods_map[period]
     functions = functions_map[features]

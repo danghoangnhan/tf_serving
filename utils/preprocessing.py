@@ -7,7 +7,6 @@ import pickle
 import json
 import os
 
-
 class Discretizer:
     def __init__(self, timestep=0.8, store_masks=True, impute_strategy='zero', start_time='zero',
                  config_path=os.path.join(os.path.dirname(__file__), 'resources/discretizer_config.json')):
