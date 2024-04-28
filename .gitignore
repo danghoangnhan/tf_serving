@@ -8,3 +8,4 @@ dataset
 models/__pycache__
 utils/__pycache__
 tf_client/__pycache__
+normalizer

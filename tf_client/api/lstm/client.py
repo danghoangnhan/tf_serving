@@ -9,7 +9,6 @@ from utils import preprocessing
 from utils.requestLoader import InHospitalMortalityRequestReader
 from utils.preprocessing import Discretizer, Normalizer
 import os
-import time
 
 fields =  [
     "Hours", 
@@ -32,6 +31,21 @@ fields =  [
     "pH"
   ]
 
+normalize_list = [
+    'ihm_ts1.0.input_str:previous.start_time:zero',
+    'ihm_ts2.0.input_str:previous.start_time:zero',
+    'ihm_ts0.8.input_str:previous.start_time:zero'
+]
+
+parameter_config = {
+    'dim': 16, 
+    'timestep' :1.0,
+    'depth': 2,
+    'dropout': 0.3,
+    'mode':'test'
+    'batch_size': 8 
+}--load_state in_hospital_mortality/keras_states/k_lstm.n16.d0.3.dep2.bs8.ts1.0.epoch27.test0.27868239298546116.state
+
 # create dedicated namespace for LSTM client
 rhm_namespace = api.namespace('rhm', description='Operations for rhm client')
 
@@ -41,14 +55,7 @@ RNNModelConfig = ModelConfig(
     MODEL_INPUTS_KEY = 'conv2d_input'
 )  
 
-# Flask-RestPlus specific parser for image uploading
-UPLOAD_KEY = 'image'
-UPLOAD_LOCATION = 'files'
-upload_parser = api.parser()
-upload_parser.add_argument(UPLOAD_KEY,
-                           location=UPLOAD_LOCATION,
-                           type=FileStorage,
-                           required=True)
+
 
 def normalize_series(data, min_val, max_val):
     return (data - min_val) / (max_val - min_val)
@@ -92,7 +99,11 @@ class Prediction(Resource):
         try:
             fields = request.json['fields']
             data = request.json['data']
-            preprocessed_data = preprocess_data(data=data,fields=fields)
+            preprocessed_data = preprocess_data(
+                data=data,
+                fields=fields,
+                normalizer_state=None
+            )
             results = make_prediction(preprocessed_data)
             results = make_prediction(data)
             return {'prediction_result': results}, 200
