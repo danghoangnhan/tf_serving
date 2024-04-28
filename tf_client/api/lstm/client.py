@@ -90,21 +90,15 @@ class Prediction(Resource):
     
     def post(self):
         try:
-            sequence_data = request.json['sequence']
-            preprocessed_data = preprocess_data(sequence_data)
+            fields = request.json['fields']
+            data = request.json['data']
+            preprocessed_data = preprocess_data(data=data,fields=fields)
             results = make_prediction(preprocessed_data)
-            time_start = time.time()
-
-            predictions = model.predict(data, batch_size=args.batch_size, verbose=1)
-            time_elapse = time.time() - time_start
-            print("Processing time on Test set :", time_elapse, " s")
-            predictions = np.array(predictions)[:, 0]
-            metrics.print_metrics_binary(labels, predictions)
-            path = os.path.join(args.output_dir, "test_predictions", os.path.basename(args.load_state)) + ".csv"
-            preprocessing.save_results(names, predictions, labels, path)
-
+            results = make_prediction(data)
             return {'prediction_result': results}, 200
+        
         except Exception as inst:
             logging.error(f"Error processing prediction request: {inst}")
-            return {'message': 'Internal error: {}'.format(inst)}, 500
+            return {
+                'message': 'Internal error: {}'.format(inst)}, 500
 
